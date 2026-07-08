@@ -1,0 +1,62 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "KanaryLabs — a studio building software ventures",
+  description = "KanaryLabs is a Wyoming holding company building and operating a portfolio of apps, web apps, SaaS, AI tools, and digital services.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <script is:inline>
+      // Apply the saved theme before paint to avoid a flash of the wrong mode.
+      (() => {
+        try {
+          const t = localStorage.getItem("theme");
+          const dark =
+            t === "dark" ||
+            ((t === "system" || !t) && matchMedia("(prefers-color-scheme: dark)").matches);
+          const el = document.documentElement;
+          el.classList.toggle("dark", dark);
+          el.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#facc15" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="KanaryLabs" />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-white font-sans text-neutral-700 dark:bg-neutral-950 dark:text-neutral-300">
+    <div class="isolate">
+      <slot />
+    </div>
+  </body>
+</html>
