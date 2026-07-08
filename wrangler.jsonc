@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kanarylabs",
+  "account_id": "6c6d05ee939be8c3e4799e2a0a570658",
+  "compatibility_date": "2026-07-08",
+  "assets": {
+    "directory": "./dist"
+  }
+}

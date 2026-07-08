@@ -1,0 +1,273 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.tsx";
+import { KanaryMark } from "../components/Logo.tsx";
+import CopyEmail from "../components/CopyEmail.tsx";
+
+// --- Edit me: primary contact + venture list live here -----------------
+const email = "hello@kanarylabs.com";
+
+const pillars = [
+  {
+    title: "Software Development",
+    body: "We design, build, and ship products end to end — from the first prototype to a shipped app people rely on.",
+    icon: "code",
+  },
+  {
+    title: "SaaS Products",
+    body: "Subscription software with billing, auth, and multi-tenancy built in — made to grow with the people who use it.",
+    icon: "cloud",
+  },
+  {
+    title: "AI Tools",
+    body: "Practical tools that put modern models to work on real, everyday problems — not demos.",
+    icon: "spark",
+  },
+  {
+    title: "Digital Services",
+    body: "Hands-on help for teams that need to move fast — engineering, product, and everything around a launch.",
+    icon: "layers",
+  },
+];
+
+const ventures = [
+  {
+    name: "atndr",
+    logo: "https://atndr.com/images/atndr-logo-white.svg",
+    logoClass: "h-12",
+    chip: true, // white logo — needs a dark backdrop
+    body: "Discover business events personalized by AI — browse thousands of conferences, summits, and expos matched to your industry.",
+    href: "https://atndr.com",
+  },
+  {
+    name: "Petals by Eithar",
+    logo: "https://petalsbyeithar.com/logo.webp",
+    logoClass: "h-8",
+    chip: false, // pink logo reads on both light and dark — no backdrop
+    body: "Hand-made floral preservation — fresh bouquets for the day, sealed in glass frames to keep for years.",
+    href: "https://petalsbyeithar.com",
+  },
+];
+---
+
+<Layout>
+  <Nav client:load />
+
+  <main>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <!-- decorative canary glow -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 -top-40 -z-10 flex justify-center blur-3xl"
+      >
+        <div class="aspect-1155/678 w-[72rem] bg-linear-to-tr from-canary-300 to-canary-500 opacity-20 dark:opacity-15 [clip-path:polygon(74%_44%,100%_61%,97%_26%,85%_0,80%_2%,72%_32%,60%_62%,52%_68%,47%_58%,45%_34%,27%_76%,0%_64%,17%_100%,27%_76%,76%_97%,74%_44%)]"></div>
+      </div>
+
+      <div class="mx-auto max-w-6xl px-6 pt-20 pb-16 sm:pt-28 sm:pb-24 lg:px-8">
+        <div class="animate-rise flex flex-col items-center text-center">
+          <p class="font-mono text-sm font-medium uppercase tracking-wide text-canary-600 dark:text-canary-400">
+            Wyoming · Software Studio
+          </p>
+          <h1 class="mx-auto mt-5 max-w-[24ch] text-5xl font-semibold tracking-tight text-balance text-neutral-900 sm:text-6xl dark:text-white">
+            We build and operate software ventures.
+          </h1>
+          <p class="mx-auto mt-6 max-w-[52ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            KanaryLabs is the holding company behind a growing portfolio of apps,
+            SaaS, and AI tools — each built to stand on its own.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+            <a
+              href="#contact"
+              class="rounded-full bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+            >
+              Get in touch
+            </a>
+            <a
+              href="#ventures"
+              class="group inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+            >
+              See our ventures
+              <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What we build -->
+    <section id="build" class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p class="font-mono text-sm font-medium uppercase tracking-wide text-canary-600 dark:text-canary-400">
+            What we build
+          </p>
+          <h2 class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white">
+            One studio, a portfolio of products.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            KanaryLabs funds and runs its own software projects across four areas —
+            each operated independently under the same roof.
+          </p>
+        </div>
+
+        <dl class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {
+            pillars.map((p) => (
+              <div class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+                <div class="flex size-11 items-center justify-center rounded-xl bg-canary-400/15 text-canary-600 dark:text-canary-400">
+                  {p.icon === "code" && (
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
+                      <path d="M9 8l-4 4 4 4M15 8l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  )}
+                  {p.icon === "cloud" && (
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
+                      <path d="M7 18a4 4 0 01-.5-7.97A5.5 5.5 0 0117.9 9.2 3.75 3.75 0 0117 18H7z" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  )}
+                  {p.icon === "spark" && (
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
+                      <path d="M12 3l1.8 5L19 9.8l-5.2 1.9L12 17l-1.8-5.3L5 9.8l5.2-1.8L12 3z" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M18.5 15.5l.7 1.9 1.8.6-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.6.7-1.9z" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  )}
+                  {p.icon === "layers" && (
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
+                      <path d="M12 3l9 5-9 5-9-5 9-5z" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M3 12l9 5 9-5M3 16l9 5 9-5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  )}
+                </div>
+                <dt class="mt-5 text-lg font-semibold text-neutral-900 dark:text-white">{p.title}</dt>
+                <dd class="mt-2 text-base text-pretty text-neutral-600 dark:text-neutral-400">{p.body}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <!-- Ventures -->
+    <section id="ventures" class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p class="font-mono text-sm font-medium uppercase tracking-wide text-canary-600 dark:text-canary-400">
+            Ventures
+          </p>
+          <h2 class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white">
+            Products in the portfolio.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            A snapshot of what we're building and running today. This list grows
+            as new projects leave the nest.
+          </p>
+        </div>
+
+        <ul role="list" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {
+            ventures.map((v) => (
+              <li class="flex flex-col rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+                <div
+                  class:list={[
+                    "flex h-18 items-center",
+                    v.chip && "w-fit justify-center rounded-xl bg-neutral-950 px-5 inset-ring inset-ring-white/10",
+                  ]}
+                >
+                  <img src={v.logo} alt={`${v.name} logo`} loading="lazy" class={`${v.logoClass} w-auto max-w-44 object-contain`} />
+                </div>
+                <h3 class="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">{v.name}</h3>
+                <p class="mt-2 max-w-[48ch] text-base text-pretty text-neutral-600 dark:text-neutral-400">{v.body}</p>
+                <div class="mt-6 flex grow items-end">
+                  <a
+                    href={v.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+                  >
+                    Visit site
+                    <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                      <path d="M4 12L12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div class="flex flex-col items-center text-center">
+          <KanaryMark className="size-10" />
+          <h2 class="mx-auto mt-6 max-w-[24ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 sm:text-5xl dark:text-white">
+            Let's build something.
+          </h2>
+          <p class="mx-auto mt-5 max-w-[52ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            Have a product idea, a project to hand off, or want to partner? We'd
+            love to hear from you.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+            <CopyEmail client:visible email={email} />
+            <a
+              href={`mailto:${email}`}
+              class="group inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+            >
+              Send an email
+              <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-neutral-950/5 dark:border-white/10">
+    <div class="mx-auto max-w-6xl px-6 py-14 lg:px-8">
+      <div class="flex flex-col gap-y-10 sm:flex-row sm:items-start sm:justify-between">
+        <div class="max-w-sm">
+          <a href="/" aria-label="Homepage" class="inline-flex">
+            <span class="inline-flex items-center gap-x-2.5">
+              <KanaryMark className="h-6 w-auto" />
+              <span class="text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">
+                Kanary<span class="text-canary-600 dark:text-canary-400">Labs</span>
+              </span>
+            </span>
+          </a>
+          <p class="mt-4 text-base text-pretty text-neutral-600 dark:text-neutral-400">
+            A holding company building and operating a portfolio of
+            software products.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-900 dark:text-white">Company</h3>
+          <address class="mt-4 space-y-3 text-base font-normal text-neutral-600 not-italic dark:text-neutral-400">
+            <p>Kanary Labs, LLC</p>
+            <p>30 N Gould St, STE R<br />Sheridan, WY 82801, USA</p>
+            <p>
+              <a href={`mailto:${email}`} class="hover:text-neutral-900 dark:hover:text-white">{email}</a>
+            </p>
+          </address>
+        </div>
+      </div>
+
+      <div class="mt-12 flex flex-col gap-y-4 border-t border-neutral-950/5 pt-8 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+        <p class="text-sm text-neutral-500 dark:text-neutral-500">
+          © 2026 Kanary Labs, LLC. All rights reserved.
+        </p>
+        <p class="text-sm text-neutral-500 dark:text-neutral-500">
+          Registered in Wyoming, USA.
+        </p>
+      </div>
+    </div>
+  </footer>
+</Layout>
