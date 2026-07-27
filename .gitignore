@@ -5,6 +5,9 @@ dist/
 # wrangler local state
 .wrangler/
 
+# cached package documentation fetched at build time
+.docs-cache/
+
 # dependencies
 node_modules/
 

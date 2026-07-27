@@ -1,0 +1,29 @@
+---
+import { KanaryMark } from "../Logo.tsx";
+import ThemeToggle from "../ThemeToggle.tsx";
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-neutral-950/5 bg-white/80 backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/80"
+>
+  <nav class="mx-auto flex max-w-8xl items-center justify-between gap-x-6 px-6 py-4 lg:px-8">
+    <a href="/" aria-label="Homepage" class="shrink-0">
+      <span class="inline-flex items-center gap-x-2.5">
+        <KanaryMark className="size-7" />
+        <span class="text-lg font-semibold tracking-tight text-neutral-900 dark:text-white">
+          Kanary<span class="text-canary-600 dark:text-canary-400">Labs</span>
+        </span>
+      </span>
+    </a>
+
+    <div class="flex items-center gap-x-3">
+      <a
+        href="/docs"
+        class="text-sm font-medium text-neutral-600 hover:text-neutral-900 max-sm:hidden dark:text-neutral-400 dark:hover:text-white"
+      >
+        All packages
+      </a>
+      <ThemeToggle client:load />
+    </div>
+  </nav>
+</header>

@@ -9,6 +9,9 @@
   --font-sans--font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
+  /* Wide container for docs (sidebar + article + table of contents). */
+  --container-8xl: 90rem;
+
   --color-canary-50: #fefce8;
   --color-canary-100: #fef9c3;
   --color-canary-200: #fef08a;
@@ -23,6 +26,223 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Anchor links land below the sticky docs header. */
+  :target {
+    scroll-margin-top: --spacing(24);
+  }
+}
+
+/* Rendered documentation markdown. Applied to the article wrapper, since the
+   HTML comes from another repo and can't carry utility classes itself. */
+@utility prose {
+  color: var(--color-neutral-700);
+  font-size: 1rem;
+  line-height: 1.75;
+
+  @variant dark {
+    color: var(--color-neutral-300);
+  }
+
+  & > * + * {
+    margin-top: --spacing(6);
+  }
+
+  & h2,
+  & h3,
+  & h4 {
+    scroll-margin-top: --spacing(24);
+    color: var(--color-neutral-900);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+
+    @variant dark {
+      color: var(--color-white);
+    }
+  }
+
+  & h2 {
+    margin-top: --spacing(12);
+    font-size: 1.5rem;
+  }
+
+  & h3 {
+    margin-top: --spacing(10);
+    font-size: 1.25rem;
+  }
+
+  & h4 {
+    margin-top: --spacing(8);
+    font-size: 1.0625rem;
+  }
+
+  & p {
+    text-wrap: pretty;
+  }
+
+  & a {
+    color: var(--color-neutral-900);
+    text-decoration: underline;
+    text-decoration-color: var(--color-canary-500);
+    text-underline-offset: 3px;
+
+    @variant dark {
+      color: var(--color-white);
+    }
+
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  /* Heading anchors stay invisible until the heading is hovered/focused. */
+  & a.heading-anchor {
+    margin-left: --spacing(2);
+    color: var(--color-neutral-400);
+    text-decoration: none;
+    opacity: 0;
+  }
+
+  & :is(h2, h3, h4):hover a.heading-anchor,
+  & a.heading-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  & :is(ul, ol) {
+    padding-left: --spacing(6);
+  }
+
+  & ul {
+    list-style-type: disc;
+  }
+
+  & ol {
+    list-style-type: decimal;
+  }
+
+  & li + li {
+    margin-top: --spacing(2);
+  }
+
+  & li::marker {
+    color: var(--color-neutral-400);
+  }
+
+  & :is(ul, ol) > li > :is(ul, ol) {
+    margin-top: --spacing(2);
+  }
+
+  & strong {
+    color: var(--color-neutral-900);
+    font-weight: 600;
+
+    @variant dark {
+      color: var(--color-white);
+    }
+  }
+
+  /* Inline code — the `pre > code` reset below keeps blocks unaffected. */
+  & :not(pre) > code {
+    border-radius: var(--radius-md);
+    background-color: --alpha(var(--color-neutral-950) / 5%);
+    padding-inline: --spacing(1.5);
+    padding-block: --spacing(0.5);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: var(--color-neutral-800);
+
+    @variant dark {
+      background-color: --alpha(var(--color-white) / 10%);
+      color: var(--color-neutral-100);
+    }
+  }
+
+  & pre {
+    overflow-x: auto;
+    border-radius: var(--radius-xl);
+    padding: --spacing(5);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    tab-size: 2;
+  }
+
+  & pre code {
+    font-family: var(--font-mono);
+  }
+
+  & blockquote {
+    border-left: 3px solid var(--color-canary-400);
+    padding-left: --spacing(5);
+    color: var(--color-neutral-600);
+    font-style: normal;
+
+    @variant dark {
+      color: var(--color-neutral-400);
+    }
+  }
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    text-align: left;
+  }
+
+  & :is(th, td) {
+    border-bottom: 1px solid --alpha(var(--color-neutral-950) / 8%);
+    padding: --spacing(3);
+    vertical-align: top;
+
+    @variant dark {
+      border-color: --alpha(var(--color-white) / 10%);
+    }
+  }
+
+  & th {
+    color: var(--color-neutral-900);
+    font-weight: 600;
+
+    @variant dark {
+      color: var(--color-white);
+    }
+  }
+
+  & hr {
+    border-color: --alpha(var(--color-neutral-950) / 8%);
+
+    @variant dark {
+      border-color: --alpha(var(--color-white) / 10%);
+    }
+  }
+
+  & img {
+    border-radius: var(--radius-xl);
+  }
+}
+
+/* Shiki emits both themes as CSS variables; show the one matching the active
+   mode. The block background is ours, not the theme's — GitHub Light's white
+   would vanish against the page. */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+}
+
+.prose pre.shiki {
+  background-color: --alpha(var(--color-neutral-950) / 4%);
+  outline: 1px solid --alpha(var(--color-neutral-950) / 6%);
+  outline-offset: -1px;
+}
+
+.dark .prose pre.shiki {
+  background-color: --alpha(var(--color-white) / 5%);
+  outline-color: --alpha(var(--color-white) / 8%);
 }
 
 /* Subtle entrance used on the hero — transform only, per interactivity rules */

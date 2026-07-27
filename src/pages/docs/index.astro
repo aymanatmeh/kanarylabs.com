@@ -1,0 +1,78 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import DocsHeader from "../../components/docs/DocsHeader.astro";
+import { loadAllPackageDocs } from "../../lib/docs";
+
+const all = await loadAllPackageDocs();
+---
+
+<Layout
+  title="Documentation | KanaryLabs"
+  description="Documentation for the open-source packages built and maintained by Kanary Labs."
+>
+  <DocsHeader />
+
+  <main class="mx-auto max-w-6xl px-6 py-16 sm:py-24 lg:px-8">
+    <p
+      class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+    >
+      Documentation
+    </p>
+    <h1
+      class="mt-4 max-w-[30ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 sm:text-5xl dark:text-white"
+    >
+      Open-source packages by Kanary Labs.
+    </h1>
+    <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+      Each package keeps its documentation in its own repository. This site builds
+      and renders them in one place.
+    </p>
+
+    <ul role="list" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        all.map(({ pkg, tree, baseUrl, versionLabel }) => (
+          <li class="flex flex-col rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="rounded-full bg-neutral-950/5 px-2.5 py-1 font-mono text-sm font-medium text-neutral-600 dark:bg-white/10 dark:text-neutral-300">
+                {tree.meta.category ?? pkg.category}
+              </span>
+              <span class="rounded-full bg-canary-400/15 px-2.5 py-1 font-mono text-sm font-medium text-canary-700 dark:text-canary-300">
+                {versionLabel}
+              </span>
+            </div>
+
+            <h2 class="mt-5 text-lg font-semibold text-neutral-900 dark:text-white">
+              <a href={baseUrl}>{pkg.name}</a>
+            </h2>
+            <p class="mt-2 max-w-[48ch] text-base text-pretty text-neutral-600 dark:text-neutral-400">
+              {tree.meta.slogan ?? pkg.description}
+            </p>
+
+            <div class="mt-6 flex grow items-end gap-x-6">
+              <a
+                href={baseUrl}
+                class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+              >
+                Documentation
+                <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+              <a
+                href={`https://github.com/${pkg.repo}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-600 dark:text-neutral-400"
+              >
+                GitHub
+                <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                  <path d="M4 12L12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>
