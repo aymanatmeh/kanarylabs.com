@@ -3,32 +3,17 @@ import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.tsx";
 import { KanaryMark } from "../components/Logo.tsx";
 import CopyEmail from "../components/CopyEmail.tsx";
+import PillarIcon from "../components/PillarIcon.astro";
+import { pillars } from "../config/services";
+import { loadAllPackageDocs } from "../lib/docs";
+
+// Open-source packages come from the same registry that powers /docs, so this
+// section stays in sync as packages are added.
+const openSource = await loadAllPackageDocs();
 
 // --- Edit me: primary contact + venture list live here -----------------
 const email = "hello@kanarylabs.com";
 
-const pillars = [
-  {
-    title: "Software Development",
-    body: "We design, build, and ship products end to end — from the first prototype to a shipped app people rely on.",
-    icon: "code",
-  },
-  {
-    title: "SaaS Products",
-    body: "Subscription software with billing, auth, and multi-tenancy built in — made to grow with the people who use it.",
-    icon: "cloud",
-  },
-  {
-    title: "AI Tools",
-    body: "Practical tools that put modern models to work on real, everyday problems — not demos.",
-    icon: "spark",
-  },
-  {
-    title: "Digital Services",
-    body: "Hands-on help for teams that need to move fast — engineering, product, and everything around a launch.",
-    icon: "layers",
-  },
-];
 
 const ventures = [
   {
@@ -97,19 +82,19 @@ const ventures = [
       </div>
     </section>
 
-    <!-- What we build -->
-    <section id="build" class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+    <!-- Services -->
+    <section id="services" class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
       <div class="mx-auto max-w-6xl px-6 lg:px-8">
         <div>
           <p class="font-mono text-sm font-medium uppercase tracking-wide text-canary-600 dark:text-canary-400">
-            What we build
+            Services
           </p>
           <h2 class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white">
-            One studio, a portfolio of products.
+            What we do, for ourselves and for you.
           </h2>
           <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
-            KanaryLabs funds and runs its own software projects across four areas —
-            each operated independently under the same roof.
+            The same team and standards behind our own products are available to
+            teams that need software built properly.
           </p>
         </div>
 
@@ -117,36 +102,25 @@ const ventures = [
           {
             pillars.map((p) => (
               <div class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
-                <div class="flex size-11 items-center justify-center rounded-xl bg-canary-400/15 text-canary-600 dark:text-canary-400">
-                  {p.icon === "code" && (
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
-                      <path d="M9 8l-4 4 4 4M15 8l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                  )}
-                  {p.icon === "cloud" && (
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
-                      <path d="M7 18a4 4 0 01-.5-7.97A5.5 5.5 0 0117.9 9.2 3.75 3.75 0 0117 18H7z" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                  )}
-                  {p.icon === "spark" && (
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
-                      <path d="M12 3l1.8 5L19 9.8l-5.2 1.9L12 17l-1.8-5.3L5 9.8l5.2-1.8L12 3z" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M18.5 15.5l.7 1.9 1.8.6-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.6.7-1.9z" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                  )}
-                  {p.icon === "layers" && (
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} class="size-6 stroke-current">
-                      <path d="M12 3l9 5-9 5-9-5 9-5z" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M3 12l9 5 9-5M3 16l9 5 9-5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                  )}
-                </div>
+                <PillarIcon icon={p.icon} />
                 <dt class="mt-5 text-lg font-semibold text-neutral-900 dark:text-white">{p.title}</dt>
-                <dd class="mt-2 text-base text-pretty text-neutral-600 dark:text-neutral-400">{p.body}</dd>
+                <dd class="mt-2 max-w-[48ch] text-base text-pretty text-neutral-600 dark:text-neutral-400">{p.body}</dd>
               </div>
             ))
           }
         </dl>
+
+        <div class="mt-10">
+          <a
+            href="/services"
+            class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+          >
+            More about our services
+            <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -188,6 +162,78 @@ const ventures = [
                     class="group inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
                   >
                     Visit site
+                    <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                      <path d="M4 12L12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Open source -->
+    <section
+      id="open-source"
+      class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10"
+    >
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p
+            class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+          >
+            Open source
+          </p>
+          <h2
+            class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white"
+          >
+            Packages we build in the open.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            Tools we needed ourselves, released for everyone. Free, documented,
+            and maintained alongside our own products.
+          </p>
+        </div>
+
+        <ul role="list" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {
+            openSource.map(({ pkg, tree, baseUrl, versionLabel }) => (
+              <li class="flex flex-col rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full bg-neutral-950/5 px-2.5 py-1 font-mono text-sm font-medium text-neutral-600 dark:bg-white/10 dark:text-neutral-300">
+                    {tree.meta.category ?? pkg.category}
+                  </span>
+                  <span class="rounded-full bg-canary-400/15 px-2.5 py-1 font-mono text-sm font-medium text-canary-700 dark:text-canary-300">
+                    {versionLabel}
+                  </span>
+                </div>
+
+                <h3 class="mt-5 text-lg font-semibold text-neutral-900 dark:text-white">
+                  {pkg.name}
+                </h3>
+                <p class="mt-2 max-w-[48ch] text-base text-pretty text-neutral-600 dark:text-neutral-400">
+                  {tree.meta.slogan ?? pkg.description}
+                </p>
+
+                <div class="mt-6 flex grow items-end gap-x-6">
+                  <a
+                    href={baseUrl}
+                    class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+                  >
+                    Documentation
+                    <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                  <a
+                    href={`https://github.com/${pkg.repo}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-600 dark:text-neutral-400"
+                  >
+                    GitHub
                     <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
                       <path d="M4 12L12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>

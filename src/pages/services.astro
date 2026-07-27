@@ -1,0 +1,280 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.tsx";
+import PillarIcon from "../components/PillarIcon.astro";
+import CopyEmail from "../components/CopyEmail.tsx";
+import { pillars, process, stack, goodFit, poorFit } from "../config/services";
+
+const email = "hello@kanarylabs.com";
+---
+
+<Layout
+  title="Software development services | KanaryLabs"
+  description="KanaryLabs builds web applications, SaaS products, and AI tools end to end — from architecture and foundations through to launch and long-term maintenance."
+>
+  <Nav client:load />
+
+  <main>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 -top-40 -z-10 flex justify-center blur-3xl"
+      >
+        <div
+          class="aspect-1155/678 w-[72rem] bg-linear-to-tr from-canary-300 to-canary-500 opacity-20 dark:opacity-15 [clip-path:polygon(74%_44%,100%_61%,97%_26%,85%_0,80%_2%,72%_32%,60%_62%,52%_68%,47%_58%,45%_34%,27%_76%,0%_64%,17%_100%,27%_76%,76%_97%,74%_44%)]"
+        >
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-6xl px-6 pt-20 pb-16 sm:pt-28 sm:pb-24 lg:px-8">
+        <p
+          class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+        >
+          Services
+        </p>
+        <h1
+          class="mt-5 max-w-[24ch] text-5xl font-semibold tracking-tight text-balance text-neutral-900 sm:text-6xl dark:text-white"
+        >
+          Software built to last longer than the launch.
+        </h1>
+        <p class="mt-6 max-w-[52ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+          We're not a do-it-all agency. We build web applications, SaaS products,
+          and AI tools on foundations that stay cheap to change as your needs grow.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a
+            href="#brief"
+            class="rounded-full bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+          >
+            Brief us your project
+          </a>
+          <a
+            href="/#open-source"
+            class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+          >
+            See our open source
+            <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- What we do -->
+    <section class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p
+            class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+          >
+            What we do
+          </p>
+          <h2
+            class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white"
+          >
+            Four things, done properly.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            The same team and standards behind our own products, available to
+            teams that need software built right.
+          </p>
+        </div>
+
+        <dl class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {
+            pillars.map((p) => (
+              <div class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+                <PillarIcon icon={p.icon} />
+                <dt class="mt-5 text-lg font-semibold text-neutral-900 dark:text-white">
+                  {p.title}
+                </dt>
+                <dd class="mt-2 max-w-[48ch] text-base text-pretty text-neutral-600 dark:text-neutral-400">
+                  {p.body}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <!-- How we work -->
+    <section class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p
+            class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+          >
+            How we work
+          </p>
+          <h2
+            class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white"
+          >
+            Foundations first, then speed.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            Most software gets expensive because the early decisions were rushed.
+            We front-load the thinking so the building stays fast.
+          </p>
+        </div>
+
+        <ol role="list" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {
+            process.map((item) => (
+              <li class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+                <span class="font-mono text-sm font-medium text-canary-600 tabular-nums dark:text-canary-400">
+                  {item.step}
+                </span>
+                <h3 class="mt-4 text-lg font-semibold text-neutral-900 dark:text-white">
+                  {item.title}
+                </h3>
+                <p class="mt-2 text-base text-pretty text-neutral-600 dark:text-neutral-400">
+                  {item.body}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- Foundations -->
+    <section class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p
+            class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+          >
+            Our stack
+          </p>
+          <h2
+            class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white"
+          >
+            The foundations we build on.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            We keep our toolset deliberately small so we know it deeply — and so
+            the code we hand over is code any team can pick up.
+          </p>
+        </div>
+
+        <dl class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {
+            stack.map((item) => (
+              <div class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+                <dt class="text-lg font-semibold text-neutral-900 dark:text-white">{item.title}</dt>
+                <dd class="mt-2 text-base text-pretty text-neutral-600 dark:text-neutral-400">
+                  {item.body}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <!-- Fit -->
+    <section class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div>
+          <p
+            class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+          >
+            Good fit
+          </p>
+          <h2
+            class="mt-4 max-w-[35ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 dark:text-white"
+          >
+            Where we're worth hiring.
+          </h2>
+          <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            We'd rather be honest up front than take on work we can't do well.
+          </p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div
+            class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10"
+          >
+            <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">What we do best</h3>
+            <ul role="list" class="mt-5 flex flex-col gap-y-3">
+              {
+                goodFit.map((item) => (
+                  <li class="flex gap-x-3 text-base text-pretty text-neutral-600 dark:text-neutral-400">
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                      class="mt-1 size-4 shrink-0 stroke-canary-600 dark:stroke-canary-400"
+                    >
+                      <path d="M4 10.5l4 4 8-9" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div
+            class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10"
+          >
+            <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">
+              Not our cup of tea
+            </h3>
+            <ul role="list" class="mt-5 flex flex-col gap-y-3">
+              {
+                poorFit.map((item) => (
+                  <li class="flex gap-x-3 text-base text-pretty text-neutral-600 dark:text-neutral-400">
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                      class="mt-1 size-4 shrink-0 stroke-neutral-400"
+                    >
+                      <path d="M6 6l8 8M14 6l-8 8" stroke-linecap="round" />
+                    </svg>
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brief us -->
+    <section id="brief" class="border-t border-neutral-950/5 py-20 sm:py-28 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <div class="flex flex-col items-center text-center">
+          <h2
+            class="mx-auto max-w-[24ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 sm:text-5xl dark:text-white"
+          >
+            Tell us what you're building.
+          </h2>
+          <p class="mx-auto mt-5 max-w-[52ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+            Send us a few lines about the project and what you're trying to
+            achieve. We'll tell you honestly whether we're the right fit.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+            <CopyEmail client:visible email={email} />
+            <a
+              href={`mailto:${email}?subject=Project%20brief`}
+              class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+            >
+              Send a brief
+              <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
