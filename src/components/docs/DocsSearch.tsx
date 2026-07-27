@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface Result {
   url: string;
@@ -23,8 +24,12 @@ export default function DocsSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
   const [ready, setReady] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const pagefind = useRef<any>(null);
   const input = useRef<HTMLInputElement>(null);
+
+  // The dialog is portalled to <body>; `document` only exists after mount.
+  useEffect(() => setMounted(true), []);
 
   // Open with ⌘K / Ctrl+K, close with Escape.
   useEffect(() => {
@@ -99,8 +104,12 @@ export default function DocsSearch() {
         <kbd className="ml-auto font-mono text-xs max-sm:hidden">⌘K</kbd>
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-60 flex items-start justify-center p-4 pt-[10vh]">
+      {/* Portalled to <body>: the sidebar is `sticky`, which creates a stacking
+          context that would trap the dialog beneath the article's content. */}
+      {open &&
+        mounted &&
+        createPortal(
+          <div className="fixed inset-0 z-999 flex items-start justify-center p-4 pt-[10vh]">
           <div
             className="absolute inset-0 bg-neutral-950/50 backdrop-blur-sm"
             onClick={() => setOpen(false)}
@@ -169,8 +178,9 @@ export default function DocsSearch() {
               </ul>
             </div>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </>
   );
 }
