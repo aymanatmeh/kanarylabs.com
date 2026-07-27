@@ -1,0 +1,121 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import DocsHeader from "../../../components/docs/DocsHeader.astro";
+import DocsSidebar from "../../../components/docs/DocsSidebar.tsx";
+import { packages } from "../../../config/packages";
+import { loadPackageDocs } from "../../../lib/docs";
+
+export async function getStaticPaths() {
+  return packages.map((pkg) => ({
+    params: { pkg: pkg.slug },
+    props: { pkgSlug: pkg.slug },
+  }));
+}
+
+const { pkgSlug } = Astro.props;
+const pkg = packages.find((p) => p.slug === pkgSlug)!;
+const docs = await loadPackageDocs(pkg);
+const { tree, baseUrl } = docs;
+
+const href = (slug: string) => `${baseUrl}/${slug}`;
+const toLink = (p: { slug: string; title: string }) => ({
+  slug: p.slug,
+  title: p.title,
+  href: href(p.slug),
+});
+
+const rootLinks = tree.rootPages.filter((p) => !p.hidden).map(toLink);
+const groups = tree.groups.map((group) => ({
+  id: group.id,
+  title: group.title,
+  links: group.pages.filter((p) => !p.hidden).map(toLink),
+}));
+
+const start = tree.ordered[0];
+const title = `${pkg.name} documentation | KanaryLabs`;
+---
+
+<Layout title={title} description={tree.meta.slogan ?? pkg.description}>
+  <DocsHeader />
+
+  <div class="mx-auto flex max-w-8xl flex-col gap-x-12 px-6 lg:flex-row lg:px-8">
+    <aside
+      class="lg:sticky lg:top-16 lg:h-[calc(100dvh-4rem)] lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:py-12"
+    >
+      <DocsSidebar
+        client:load
+        packageName={pkg.name}
+        packageHref={baseUrl}
+        rootLinks={rootLinks}
+        groups={groups}
+        currentSlug=""
+        versions={pkg.versions}
+        versionLabel={docs.versionLabel}
+      />
+    </aside>
+
+    <div class="min-w-0 flex-1 py-10 sm:py-12">
+      <p
+        class="font-mono text-sm font-medium tracking-wide text-canary-600 uppercase dark:text-canary-400"
+      >
+        {tree.meta.category ?? pkg.category} · {docs.versionLabel}
+      </p>
+      <h1
+        class="mt-3 max-w-[30ch] text-4xl font-semibold tracking-tight text-balance text-neutral-900 sm:text-5xl dark:text-white"
+      >
+        {tree.meta.title ?? pkg.name}
+      </h1>
+      <p class="mt-5 max-w-[56ch] text-lg text-pretty text-neutral-600 dark:text-neutral-400">
+        {tree.meta.slogan ?? pkg.description}
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+        {
+          start && (
+            <a
+              href={href(start.slug)}
+              class="rounded-full bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+            >
+              Read the docs
+            </a>
+          )
+        }
+        <a
+          href={`https://github.com/${pkg.repo}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-neutral-900 dark:text-white"
+        >
+          View on GitHub
+          <svg viewBox="0 0 16 16" fill="none" strokeWidth={1.75} class="size-4 stroke-current">
+            <path d="M4 12L12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {
+          tree.groups.map((group) => (
+            <div class="rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
+              <h2 class="text-lg font-semibold text-neutral-900 dark:text-white">{group.title}</h2>
+              <ul role="list" class="mt-4 flex flex-col gap-y-2">
+                {group.pages
+                  .filter((p) => !p.hidden)
+                  .map((p) => (
+                    <li>
+                      <a
+                        href={href(p.slug)}
+                        class="text-base text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+                      >
+                        {p.title}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</Layout>

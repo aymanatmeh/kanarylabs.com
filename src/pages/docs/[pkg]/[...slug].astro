@@ -1,0 +1,28 @@
+---
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+import { packages } from "../../../config/packages";
+import { loadPackageDocs } from "../../../lib/docs";
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const pkg of packages) {
+    const docs = await loadPackageDocs(pkg);
+    for (const [slug, rendered] of docs.rendered) {
+      paths.push({
+        params: { pkg: pkg.slug, slug },
+        props: { pkgSlug: pkg.slug, slug },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { pkgSlug, slug } = Astro.props;
+const pkg = packages.find((p) => p.slug === pkgSlug)!;
+const docs = await loadPackageDocs(pkg);
+const current = docs.rendered.get(slug)!;
+---
+
+<DocsLayout docs={docs} current={current} />
