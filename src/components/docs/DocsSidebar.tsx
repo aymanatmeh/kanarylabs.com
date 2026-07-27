@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import DocsSearch from "./DocsSearch";
 
 export interface NavLink {
@@ -51,6 +52,10 @@ export default function DocsSidebar({
   versionLabel,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // The drawer is portalled to <body>; `document` only exists after mount.
+  useEffect(() => setMounted(true), []);
 
   // Close the drawer on Escape, and lock scroll while it's open.
   useEffect(() => {
@@ -131,8 +136,10 @@ export default function DocsSidebar({
         </button>
       </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+      {open &&
+        mounted &&
+        createPortal(
+          <div className="fixed inset-0 z-999 lg:hidden">
           <div
             className="absolute inset-0 bg-neutral-950/40"
             onClick={() => setOpen(false)}
@@ -162,8 +169,9 @@ export default function DocsSidebar({
             </div>
             <div className="mt-2">{nav}</div>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
 
       <div className="max-lg:hidden">{nav}</div>
     </>
