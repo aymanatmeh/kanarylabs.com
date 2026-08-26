@@ -25,6 +25,16 @@ const ventures = [
     href: "https://atndr.com",
   },
   {
+    name: "Caloop",
+    logo: "https://caloop.app/brand/caloop-mark.svg",
+    // Ships a proper dark variant, so swap rather than force a backdrop.
+    logoDark: "https://caloop.app/brand/caloop-mark-dark.svg",
+    logoClass: "h-12",
+    chip: false,
+    body: "An AI nutrition coach built for Arabic food — log a meal by photo or voice and get calories and macros that understand local dishes and portions.",
+    href: "https://caloop.app",
+  },
+  {
     name: "Petals by Eithar",
     logo: "https://petalsbyeithar.com/logo.webp",
     logoClass: "h-8",
@@ -140,7 +150,7 @@ const ventures = [
           </p>
         </div>
 
-        <ul role="list" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <ul role="list" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {
             ventures.map((v) => (
               <li class="flex flex-col rounded-2xl bg-white p-8 inset-ring inset-ring-neutral-950/5 dark:bg-neutral-900 dark:inset-ring-white/10">
@@ -150,7 +160,21 @@ const ventures = [
                     v.chip && "w-fit justify-center rounded-xl bg-neutral-950 px-5 inset-ring inset-ring-white/10",
                   ]}
                 >
-                  <img src={v.logo} alt={`${v.name} logo`} loading="lazy" class={`${v.logoClass} w-auto max-w-44 object-contain`} />
+                  <img
+                    src={v.logo}
+                    alt={`${v.name} logo`}
+                    loading="lazy"
+                    class:list={[v.logoClass, "w-auto max-w-44 object-contain", v.logoDark && "dark:hidden"]}
+                  />
+                  {v.logoDark && (
+                    <img
+                      src={v.logoDark}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      class:list={[v.logoClass, "w-auto max-w-44 object-contain not-dark:hidden"]}
+                    />
+                  )}
                 </div>
                 <h3 class="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">{v.name}</h3>
                 <p class="mt-2 max-w-[48ch] text-base text-pretty text-neutral-600 dark:text-neutral-400">{v.body}</p>
