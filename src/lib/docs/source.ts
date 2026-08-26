@@ -27,6 +27,33 @@ const isCI = process.env.CI === "true" || process.env.CI === "1";
 /** Set DOCS_SOURCE=remote to force GitHub even when a local checkout exists. */
 const forceRemote = process.env.DOCS_SOURCE === "remote";
 
+/** GitHub rate-limits bursts, so downloads are throttled and retried. */
+const MAX_CONCURRENCY = 6;
+const MAX_RETRIES = 4;
+const RETRY_BASE_MS = 300;
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Like Promise.all(items.map(fn)) but with at most `limit` in flight. */
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let cursor = 0;
+
+  const worker = async () => {
+    while (cursor < items.length) {
+      const index = cursor++;
+      results[index] = await fn(items[index]!);
+    }
+  };
+
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
 class DocsSourceError extends Error {
   constructor(pkg: PackageEntry, ref: string, detail: string) {
     super(
@@ -114,24 +141,38 @@ async function fetchRemoteDocs(pkg: PackageEntry, ref: string): Promise<RawDoc[]
     throw new DocsSourceError(pkg, ref, `No markdown files found under "${pkg.docsDir}".`);
   }
 
-  const docs = await Promise.all(
-    files.map(async (file) => {
-      const rawUrl = `https://raw.githubusercontent.com/${pkg.repo}/${ref}/${file.path}`;
-      const res = await fetch(rawUrl, {
-        headers: { "User-Agent": "kanarylabs-docs-build" },
-      });
-      if (!res.ok) {
-        throw new DocsSourceError(
-          pkg,
-          ref,
-          `Failed to download ${file.path}: ${res.status} ${res.statusText}.`,
-        );
-      }
-      return { path: file.path.slice(prefix.length), content: await res.text() };
-    }),
-  );
+  const download = async (path: string): Promise<RawDoc> => {
+    const rawUrl = `https://raw.githubusercontent.com/${pkg.repo}/${ref}/${path}`;
+    let lastStatus = "";
 
-  return docs;
+    // raw.githubusercontent.com throttles bursts (429 / 503 Backend.max_conn),
+    // so transient failures are retried with backoff before giving up.
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+      let res: Response;
+      try {
+        res = await fetch(rawUrl, { headers: { "User-Agent": "kanarylabs-docs-build" } });
+      } catch (err) {
+        lastStatus = err instanceof Error ? err.message : String(err);
+        await sleep(RETRY_BASE_MS * 2 ** attempt);
+        continue;
+      }
+
+      if (res.ok) return { path: path.slice(prefix.length), content: await res.text() };
+
+      lastStatus = `${res.status} ${res.statusText}`;
+      const retryable = res.status === 429 || res.status >= 500;
+      if (!retryable) break;
+      await sleep(RETRY_BASE_MS * 2 ** attempt);
+    }
+
+    throw new DocsSourceError(pkg, ref, `Failed to download ${path}: ${lastStatus}.`);
+  };
+
+  return mapWithConcurrency(
+    files.map((f) => f.path),
+    MAX_CONCURRENCY,
+    download,
+  );
 }
 
 /** Returns every markdown file for a package at a given ref. */
